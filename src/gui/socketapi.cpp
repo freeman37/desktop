@@ -891,8 +891,9 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
             auto parentDir = fileData.parentFolder();
             auto parentRecord = parentDir.journalRecord();
             bool canAddToDir =
-                (fileInfo.isFile() && !parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddFile))
-                || (fileInfo.isDir() && !parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories));
+                !parentRecord.isValid() // We're likely at the root of the sync folder, got to assume we can add there
+                || (fileInfo.isFile() && parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddFile))
+                || (fileInfo.isDir() && parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories));
             bool canChangeFile =
                 !isOnTheServer
                 || (record._remotePerm.hasPermission(RemotePermissions::CanDelete)
