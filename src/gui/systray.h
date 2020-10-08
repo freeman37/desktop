@@ -65,8 +65,6 @@ signals:
     void openSettings();
     void openHelp();
     void shutdown();
-    void pauseSync();
-    void resumeSync();
 
     Q_INVOKABLE void hideWindow();
     Q_INVOKABLE void showWindow();
@@ -75,7 +73,13 @@ signals:
 public slots:
     void slotNewUserSelected();
 
+private slots:
+    void slotUnpauseAllFolders();
+    void slotPauseAllFolders();
+
 private:
+    void setPauseOnAllFoldersHelper(bool pause);
+
     static Systray *_instance;
     Systray();
 
